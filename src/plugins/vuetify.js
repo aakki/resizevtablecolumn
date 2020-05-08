@@ -2,15 +2,13 @@ import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 
 const ICONS = {
-    checkboxOn: 'check_box',
-    checkboxOff: 'check_box_outline_blank'
 };
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
     icons: {
-        iconfont: 'mdi', // 'md' || 'mdiSvg' || 'md' || 'fa' || 'fa4',
+        iconfont: 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4',
         values: ICONS
     },
     theme: {
@@ -25,7 +23,8 @@ export default new Vuetify({
                 red: '#EE2737',
                 green: '#00B140',
                 blue: '#41B6E6',
-                error: '#EE2737'
+                error: '#EE2737',
+                darkblue:'#181952'
             },
         },
         options: {
