@@ -87,12 +87,6 @@ table td + td {
 .card-details {
     background: rgba(187, 187, 187, 0.12);
     height: 100%;
-
-    .detail-actions {
-        position: absolute;
-        bottom: 40px;
-        right: 40px;
-    }
 }
 
 .no-padding {
@@ -125,3 +119,41 @@ table td + td {
         }
     }
 }
+
+.v-dialog:not(.v-dialog--fullscreen) {
+    overflow-y: hidden;
+}
+
+.theme--light.v-btn.v-btn--icon {
+    &.close {
+        color: #fff;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+}
+
+.v-card {
+    &.custom-card {
+        height: 560px;
+        overflow-y: auto;
+    }
+}
+
+.v-card__subtitle, .v-card__text, .v-card__title {
+    &.custom-card-text {
+        padding: 0;
+        padding-left: 16px;
+        overflow-x: hidden;
+    }
+}
+
+.tbl-selected-records {
+    height: 86%;
+}
+
+/*.v-data-table
+tbody
+tr:hover:not(.v-data-table__expanded__content) {
+    background: #ddd !important;
+}*/
