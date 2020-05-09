@@ -95,6 +95,17 @@ table td + td {
 
 .theme--light {
     &.v-data-table {
+        tr {
+            &.locked {
+                color: rgb(221, 221, 221);
+                cursor: not-allowed;
+            }
+        }
+
+        td, th {
+            padding: 0 32px;
+        }
+
         &.border-none {
             background: transparent;
 
@@ -149,11 +160,11 @@ table td + td {
 }
 
 .tbl-selected-records {
-    height: 86%;
+    height: 89%;
 }
 
-/*.v-data-table
-tbody
-tr:hover:not(.v-data-table__expanded__content) {
-    background: #ddd !important;
-}*/
+.v-tooltip__content {
+    background: #fff;
+    color: #808080;
+    box-shadow: 0 8px 6px -6px rgba(0,0,0,0.4);
+}

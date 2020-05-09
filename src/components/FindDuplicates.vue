@@ -29,12 +29,6 @@
                                         <v-col md="11" xs="11">
                                             Search for duplicates
                                         </v-col>
-                                        <!--<v-col md="1" xs="1" class="dialog-close">
-                                            <v-btn icon
-                                                   @click="dialog = false">
-                                                <v-icon>mdi-close</v-icon>
-                                            </v-btn>
-                                        </v-col>-->
                                     </v-row>
                                 </div>
                                 <div class="search-card mb-4">
@@ -57,43 +51,52 @@
                                     </v-row>
                                 </div>
 
-                                <!--<v-data-table :single-select="singleSelect"
-                                show-select
-                                item-key="id"
-                                v-model="selectedData"
-                                :headers="headers"
-                                :items="duplicatesData"
-                                append-icon="mdi-checkbox"
-                                v-resizable-columns
-                                :search="search"></v-data-table>-->
-
                                 <v-data-table v-model="selectedData"
-                                              :headers="headers"
-                                              :items="duplicatesData"
+                                              v-bind:headers="headers"
+                                              v-bind:items="duplicatesData"
                                               item-key="id"
                                               :search="search"
-                                              :single-select="singleSelect"
-                                              show-select>
-                                    <!--<template v-for="slot in Object.keys($scopedSlots)" :slot="slot" slot-scope="scope">
-                                        <slot :name="slot" v-bind="scope" />
-                                    </template>-->
-                                    <template slot="items" slot-scope="props">
-                                        <tr v-on:click="showAlert(props.item)">
-                                            <td>
-                                                <v-checkbox color="darkblue" v-model="props.selected"
-                                                            primary></v-checkbox>
+                                              show-select
+                                              :single-select="singleSelect">
+                                    <template v-slot:body="{ items }">
+                                        <tbody>
+                                            <tr v-for="item in items" :key="item.id" :class="{'locked':item.islocked}" :disabled="item.islocked">
+                                                <td width="50px">
+                                                    <v-row>
+                                                        <v-col cols="6">
+                                                            <v-checkbox primary v-model="selectedData"
+                                                                        :value="item"
+                                                                        hide-details></v-checkbox>
 
-                                                <!--hide-details-->
-                                            </td>
-                                            <td>{{ props.item.source }}</td>
-                                            <td class="text-xs-right">{{ props.item.master_id }}</td>
-                                            <td class="text-xs-right">{{ props.item.name }}</td>
-                                            <td class="text-xs-right">{{ props.item.billing_street }}</td>
-                                            <td class="text-xs-right">{{ props.item.lead_source }}</td>
-                                            <td class="text-xs-right">{{ props.item.biling_state }}</td>
-                                            <td class="text-xs-right">{{ props.item.biling_city }}</td>
-                                            <td class="text-xs-right">{{ props.item.phone }}</td>
-                                        </tr>
+                                                        </v-col>
+                                                        <v-col cols="6" class="pt-6">
+
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }" v-if="item.islocked">
+                                                                    <v-btn icon v-on="on">
+                                                                        <v-icon>mdi-lock</v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span class="tooltip">
+                                                                    You don't have access to this record.
+                                                                    <br />
+                                                                    Please <a href="#">contact</a> your admin for assistance.
+                                                                </span>
+                                                            </v-tooltip>
+
+                                                        </v-col>
+                                                    </v-row>
+                                                </td>
+                                                <td class="flex-item">{{ item.source }}</td>
+                                                <td class="flex-item">{{ item.master_id }}</td>
+                                                <td class="flex-item">{{ item.name }}</td>
+                                                <td class="flex-item">{{ item.billing_street }}</td>
+                                                <td class="flex-item">{{ item.lead_source }}</td>
+                                                <td class="flex-item">{{ item.biling_state }}</td>
+                                                <td class="flex-item">{{ item.biling_city }}</td>
+                                                <td class="flex-item">{{ item.phone }}</td>
+                                            </tr>
+                                        </tbody>
                                     </template>
                                 </v-data-table>
                             </v-col>
@@ -120,7 +123,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="(o, i) in selectedData"
+                                                    <tr v-for="(o,i) in selectedData"
                                                         :key="i">
                                                         <td>
                                                             <strong><ul><li>{{o.name}}</li></ul></strong>
@@ -168,58 +171,57 @@
 <script>
     import DuplicatesData from '@/assets/data/data.json';
     export default {
-        data: () => ({
-            dialog: false,
-            singleSelect: false,
-            selectedData: [],
-            search: '',
-            headers: [{
-                text: 'Source',
-                align: 'left',
-                value: 'source'
-            },
-            {
-                text: 'Master ID',
-                value: 'master_id'
-            },
-            {
-                text: 'Name',
-                value: 'name'
-            },
-            {
-                text: 'Billing Street',
-                value: 'billing_street'
-            },
-            {
-                text: 'Lead Source',
-                value: 'lead_source'
-            },
-            {
-                text: 'Biling State',
-                value: 'biling_state'
-            },
-            {
-                text: 'Biling City',
-                value: 'biling_city'
-            },
-            {
-                text: 'Phone',
-                value: 'phone'
-            }],
-            duplicatesData: DuplicatesData
-        }),
+        data: function () {
+            return {
+                dialog: false,
+                singleSelect: false,
+                selectedData: [],
+                search: '',
+                headers: [{
+                    text: 'Source',
+                    align: 'left',
+                    value: 'source'
+                },
+                {
+                    text: 'Master ID',
+                    value: 'master_id'
+                },
+                {
+                    text: 'Name',
+                    value: 'name'
+                },
+                {
+                    text: 'Billing Street',
+                    value: 'billing_street'
+                },
+                {
+                    text: 'Lead Source',
+                    value: 'lead_source'
+                },
+                {
+                    text: 'Biling State',
+                    value: 'biling_state'
+                },
+                {
+                    text: 'Biling City',
+                    value: 'biling_city'
+                },
+                {
+                    text: 'Phone',
+                    value: 'phone'
+                }],
+                duplicatesData: DuplicatesData
+            }
+        },
         methods: {
             doReview: function () {
                 this.selectedData = [];
                 this.dialog = false;
             },
-            deleteRecords: function (item) {
-                this.selectedData.splice(this.selectedData.indexOf(item), 1);
-            },
-            showAlert(a) {
-                console.log(a.name);
-                if (event.target.classList.contains('btn__content')) return;
-                alert('Alert! \n' + a.name);
+            deleteRecords: function (index) {
+                if (index > -1) {
+                    this.selectedData.splice(index, 1);
+                }
             }
         },
         computed: {
