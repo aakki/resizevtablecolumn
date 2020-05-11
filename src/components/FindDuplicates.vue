@@ -22,7 +22,7 @@
                 <v-card class="custom-card">
                     <v-card-text class="custom-card-text">
                         <v-row>
-                            <v-col cols="8" lg="8" sm="12">
+                            <v-col cols="8" lg="8" sm="12" style="overflow-x: auto;">
                                 <div class="headline lighten-2"
                                      primary-title>
                                     <v-row>
@@ -55,46 +55,60 @@
                                               v-bind:headers="headers"
                                               v-bind:items="duplicatesData"
                                               item-key="id"
+                                              hide-default-header
+                                              fixed-header
+                                              height="500px"
+                                              class="duplicate-data-table"
                                               :search="search"
-                                              show-select
                                               :single-select="singleSelect">
+                                    <!--show-select-->
+                                    <template v-slot:header="{ props: { headers } }">
+                                        <thead>
+                                            <tr>
+                                                <th class="custom-header">
+                                                    <v-btn icon>
+                                                        <v-icon>mdi-filter-outline</v-icon>
+                                                    </v-btn>
+                                                </th>
+                                                <th class="custom-header" v-for="(header,i) in headers"
+                                                    :key="i">
+                                                    {{ header.text }}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </template>
                                     <template v-slot:body="{ items }">
                                         <tbody>
                                             <tr v-for="item in items" :key="item.id" :class="{'locked':item.islocked}" :disabled="item.islocked">
-                                                <td width="50px">
-                                                    <v-row>
-                                                        <v-col cols="6">
-                                                            <v-checkbox primary v-model="selectedData"
-                                                                        :value="item"
-                                                                        hide-details></v-checkbox>
-
-                                                        </v-col>
-                                                        <v-col cols="6" class="pt-6">
-
-                                                            <v-tooltip top>
-                                                                <template v-slot:activator="{ on }" v-if="item.islocked">
-                                                                    <v-btn icon v-on="on">
-                                                                        <v-icon>mdi-lock</v-icon>
-                                                                    </v-btn>
-                                                                </template>
-                                                                <span class="tooltip">
-                                                                    You don't have access to this record.
-                                                                    <br />
-                                                                    Please <a href="#">contact</a> your admin for assistance.
-                                                                </span>
-                                                            </v-tooltip>
-
-                                                        </v-col>
-                                                    </v-row>
+                                                <td>
+                                                    <div class="locked">
+                                                        <v-checkbox primary v-model="selectedData"
+                                                                    :value="item"
+                                                                    hide-details></v-checkbox>
+                                                    </div>
+                                                    <div class="locked">
+                                                        <v-tooltip top>
+                                                            <template v-slot:activator="{ on }" v-if="item.islocked">
+                                                                <v-btn class="btn-lock" icon v-on="on">
+                                                                    <v-icon>mdi-lock-outline</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <span class="tooltip">
+                                                                You don't have access to this record.
+                                                                <br />
+                                                                Please <a href="#">contact</a> your admin for assistance.
+                                                            </span>
+                                                        </v-tooltip>
+                                                    </div>
                                                 </td>
-                                                <td class="flex-item">{{ item.source }}</td>
-                                                <td class="flex-item">{{ item.master_id }}</td>
-                                                <td class="flex-item">{{ item.name }}</td>
-                                                <td class="flex-item">{{ item.billing_street }}</td>
-                                                <td class="flex-item">{{ item.lead_source }}</td>
-                                                <td class="flex-item">{{ item.biling_state }}</td>
-                                                <td class="flex-item">{{ item.biling_city }}</td>
-                                                <td class="flex-item">{{ item.phone }}</td>
+                                                <td>{{ item.source }}</td>
+                                                <td>{{ item.master_id }}</td>
+                                                <td>{{ item.name }}</td>
+                                                <td>{{ item.billing_street }}</td>
+                                                <td>{{ item.lead_source }}</td>
+                                                <td>{{ item.biling_state }}</td>
+                                                <td>{{ item.biling_city }}</td>
+                                                <td>{{ item.phone }}</td>
                                             </tr>
                                         </tbody>
                                     </template>
@@ -113,7 +127,7 @@
                                     <v-divider class="my-4"></v-divider>
                                     <div class="tbl-selected-records" v-if="selectedData.length>0">
                                         <h4>Selected Records:</h4>
-                                        <v-simple-table fixed-header class="border-none">
+                                        <v-simple-table fixed-header height="500px" class="border-none">
                                             <template v-slot:default>
                                                 <thead>
                                                     <tr>
